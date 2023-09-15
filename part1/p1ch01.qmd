@@ -1,0 +1,38 @@
+[Lorem ipsum dolor sit amet]{.smallcaps}, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Convallis convallis tellus id interdum velit laoreet. Dis parturient montes nascetur ridiculus. Faucibus interdum posuere lorem ipsum dolor sit amet. Erat imperdiet sed euismod nisi. Pellentesque id nibh tortor id. Lacus sed turpis tincidunt id. 
+
+::: column-margin
+Some margin notes that we write. The template is inspired in Tufte-book.
+:::
+
+## This is a section
+For $x\ll1$ one can approximate
+
+$$
+\sin(x) \approx x
+$$ {#eq-sin}
+
+This is a table:
+
+| Default | Left | Right | Center |
+|---------|:-----|------:|:------:|
+| 12      | 12   |    12 |   12   |
+| 123     | 123  |   123 |  123   |
+| 1       | 1    |     1 |   1    |
+
+: Test Table {#tbl-my_table}
+
+I can reference @eq-sin and @tbl-my_table. The output is correct, but I cannot autocomplete them in my extension.
+
+In this template we also have some index entries\index{index example} and also the glossaries package. But that shouldn't be a problem. Since glossaries are compiled after quarto render with the tex output.
+
+Here we cite @Einstein:1916vd.
+
+## Explanation of the project structure
+* `_book`contains the output pdf
+* `backmatter` contains the list of acronyms defined for the Latex package glossaries, the .bib file for references, the .csl for the citeproc style and a references.qmd file since we want to have all the references at the end of the book, not after every chapter.
+* `fonts` contains the fonts used by the project
+* `frontmatter` contains the chapters for the frontmatter of the template
+* `latex` contains several .tex template partials and the style to be used by the imakeidx package
+* `part1` contains a `p1.qmd` file which has the part title, a `p1chapters.qmd` file in which we include each different chapter of page 1. This way I don't have a really long .yml file and can change the title of the chapter outside the chapter .qmd file. Finally, `ch999.qmd` is just a .qmd file that I include to restore the geometry of the tex file so we no longer use Tufte's style.
+* `_quarto.yml` is the usual _quarto file and `index.qmd` is the entry point. It includes the frontmatter chapters.
+* `buildpdf.sh` is a shell script that I use when I want to render the acronym list of the glossaries package

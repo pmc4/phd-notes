@@ -1,0 +1,39 @@
+$if(toc)$
+$if(toc-title)$
+% Change color of TOC title
+\renewcommand*\contentsname{\color{myCyan}$toc-title$}
+$endif$
+$if(beamer)$
+\begin{frame}[allowframebreaks]
+$if(toc-title)$
+  \frametitle{$toc-title$}
+$endif$
+  \tableofcontents[hideallsubsections]
+\end{frame}
+$else$
+{
+% $if(colorlinks)$
+% \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
+% \hypersetup{linkcolor=myRed}
+% $endif$
+\setcounter{tocdepth}{$toc-depth$}
+% Clear double page to correctly set the pdf bookmark
+\cleardoublepage
+% Add a bookmark to the pdf so the TOC appears in the navigation
+\pdfbookmark[section]{$toc-title$}{toc}
+
+\tableofcontents
+% Add horizontal ruler below the TOC title
+% \vskip-3\ht sets the vertical spacing between the ruler and the title
+% 0.5pt is the width of the ruler
+\addtocontents{toc}{\vskip-3\ht\strutbox\makebox[\textwidth][c]{\vspace*{-1cm}\rule{\dimexpr\textwidth}{0.5pt}}\par}
+
+}
+$endif$
+$endif$
+$if(lof)$
+\listoffigures
+$endif$
+$if(lot)$
+\listoftables
+$endif$

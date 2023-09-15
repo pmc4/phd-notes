@@ -1,0 +1,4 @@
+<!-- In ch999 we include the new geometry command for the references -->
+<!-- This must be the last line of the last part include of the document -->
+
+\newgeometry{inner=24.8mm, top=27.4mm, bottom=30mm}

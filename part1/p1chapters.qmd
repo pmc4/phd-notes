@@ -1,0 +1,9 @@
+<!-- Include chapter files for part 1 here. The root directory is already ./part1 -->
+
+<!-- Nomenclature is pXchYY where pX means part X and chYY means chapter YY -->
+
+# WIP title
+{{< include p1ch01.qmd >}}
+
+<!-- Include here the new geometry for the references -->
+{{< include ch999.qmd >}}

@@ -1,0 +1,91 @@
+project:
+  type: book
+
+book:
+  title: "Some phd notes"
+  subtitle: "Subtitle"
+  author: pmc4
+  date: today
+  date-format: long
+  # Book structure
+  chapters:
+    # Frontmatter. index.qmd must be at root directory
+    - index.qmd
+    # Part 1
+    - part: part1/p1.qmd
+      chapters:
+      - part1/p1chapters.qmd
+    # Remember to use \newgeometry{inner=24.8mm, top=27.4mm, bottom=30mm} before references.qmd
+    # Backmatter  
+    - backmatter/references.qmd
+
+
+format:
+  pdf:
+    documentclass: scrbook
+    keep-tex: true
+    classoption:
+    - 11pt
+    - usegeometry # Needed for the geometry package inside scrbook class
+    pdf-engine: xelatex
+
+    # Define fonts as in the fontspec package. We select different styles.
+    # It's important to add the Path. Here we use a relative path
+    mainfont: STIXTwoText
+    mainfontoptions:
+    - Path=fonts/
+    - Extension=.otf
+    - UprightFont=*-Regular
+    - BoldFont=*-Bold
+    - ItalicFont=*-Italic
+    - BoldItalicFont=*-BoldItalic
+    # Define math font
+    mathfont: STIXTwoMath-Regular
+    mathfontoptions:
+    - Path=./fonts/
+    - Extension=.otf
+
+    # Add template partials for customizing things. These are modified from
+    # https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/formats/pdf/pandoc
+    # Read https://quarto.org/docs/journals/templates.html#latex-partials for more info
+    template-partials:
+      - latex/toc.tex
+      - latex/before-body.tex
+      - latex/after-body.tex
+    template: latex/my_template.tex
+
+    # Define page layout. Read geometry package docs for more info
+    geometry:
+    - a4paper
+    - twoside
+    - inner=24.8mm
+    - top=27.4mm
+    - bottom=30mm
+    - textwidth=107mm
+    - marginparsep=8.2mm
+    - marginparwidth=49.4mm
+    - textheight=44\baselineskip
+    - headheight=\baselineskip
+
+
+    bibliography: backmatter/references.bib
+    citeproc: true
+    cite-method: citeproc
+    # This is a custom csl file based on the American Physics Society
+    csl: backmatter/aps-no-space-prefix
+    link-citations: true
+    link-bibliography: true
+
+    # Set footnotes on margin
+    reference-location: margin
+
+    toc: true
+    toc-title: Contents
+    colorlinks: true
+
+    # Configure headers
+    include-in-header: 
+      file: latex/preamble.tex
+
+    # Configure code block highlight style
+    highlight-style: arrow

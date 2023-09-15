@@ -1,0 +1,149 @@
+% Use scrlayer-scrpage instead of fancyhdr
+\usepackage[automark,headsepline]{scrlayer-scrpage} % With automark we write the name of chapter and section in the header
+\KOMAoptions{footwidth=textwithmarginpar} % Set the footwidth of the whole page, not just the textwidth
+\clearpairofpagestyles % Clear previous styles
+\cfoot[\pagemark]{\pagemark} % Add page mark to the footer
+\lehead{\headmark} % Add the headmarks defined above
+\rohead{\headmark}
+\renewcommand*{\partpagestyle}{empty} % Redefine the part style to empty. We don't want page numbers therein
+\pagestyle{scrheadings} % Set page styling
+
+
+% Add color
+\usepackage{xcolor}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names,hyperref}{xcolor}
+% Define some custom colors
+\definecolor{myCyan}{HTML}{00798c}
+\definecolor{myRed}{HTML}{d1495b}
+\definecolor{myYellow}{HTML}{edae49}
+\definecolor{myBlack}{HTML}{000000}
+% Math equation colors
+\definecolor{mGreen}{HTML}{389f4e}
+\definecolor{mBlue}{HTML}{2f4ee0}
+\definecolor{mOrange}{HTML}{ee6321}
+% Configure hyperreff package
+% \usepackage{hyperref}
+\hypersetup{
+linktoc=page,
+bookmarksnumbered,
+}
+
+% Add cool font glyphs
+\usepackage{adforn}
+% Bookmark package
+\usepackage{bookmark}
+
+
+% Add an index to the document
+\indexsetup{othercode=\small}
+% Configure the appearance of the index as of https://latex.org/forum/viewtopic.php?t=22245
+\makeindex[program=makeindex,columns=2,intoc=true,options={-s latex/makeindex_style.ist}]
+
+
+% Reset chapter number in each part
+% \makeatletter
+% \@addtoreset{chapter}{part}
+% \makeatother
+
+% Center \part heading in the TOC
+\makeatletter
+\renewcommand*\l@part[2]{%
+  \ifnum \c@tocdepth >-2\relax
+    \addpenalty{-\@highpenalty}%
+    \addvspace{2.25em \@plus\p@}%
+    \setlength\@tempdima{3em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      {\leavevmode
+       \hspace*{\fill}\centering\large\bfseries #1\hspace*{\fill}\llap{#2}}\par
+       \nobreak
+         \global\@nobreaktrue
+         \everypar{\global\@nobreakfalse\everypar{}}%
+    \endgroup
+  \fi}
+\makeatother
+% Remove page number of the \part entry in the TOC
+\makeatletter
+\let\oldl@part\l@part
+\renewcommand{\l@part}[2]{\oldl@part{#1}{}}
+\makeatother
+
+% Add dotted line to the chapter level in table of contents (TOC) using KOMA
+\KOMAoptions{toc=chapterentrywithdots}
+% Remove 'Chapter' word from chapter headings
+\KOMAoptions{chapterprefix=false}
+
+% Set font type and color of chapter entry in TOC
+\addtokomafont{chapterentry}{\color{myCyan}}
+% Set font type and color of chapter entry page number in TOC
+\addtokomafont{chapterentrypagenumber}{\color{myRed}}
+% Set font type and color of chapter entry dots in TOC
+\addtokomafont{chapterentrydots}{\color{myBlack}}
+
+% Set every header with the same roman (upright) font used in the text
+\addtokomafont{disposition}{\rmfamily}
+
+% Make the number of the chapter to be black
+\renewcommand*{\chapterformat}{\textcolor{myBlack}{\selectfont\thechapter}}
+% Make the title of the chapter to be of myCyan color
+\addtokomafont{chapter}{\color{myCyan}}
+
+% Remove the dot after Part. I title
+\renewcommand*{\partformat}{\partname~\thepart}
+
+% Add vertical line following 
+% https://tex.stackexchange.com/questions/502279/formatting-of-multi-line-chapter-heading-with-scrreprt-vertical-alignment/502318#502318
+\newsavebox\chapternumberbox
+\newsavebox\chaptertextbox
+
+\let\originalchapterlinesformat\chapterlinesformat
+\renewcommand\chapterlinesformat[3]{%
+  \IfArgIsEmpty{#2}
+    {\originalchapterlinesformat{#1}{#2}{#3}}
+    {\ifstr{#1}{chapter}
+      {%
+        \savebox\chapternumberbox{#2}%
+        \savebox\chaptertextbox{%
+          \parbox{\dimexpr\textwidth-\wd\chapternumberbox-1em-2pt\relax}{\raggedright#3}%
+        }%
+        \raisebox{\dimexpr-.25\dp\strutbox}
+          {\usebox\chapternumberbox}%
+        \enskip
+        \textcolor{gray!50}{%
+          \rule[\dimexpr-\dp\chaptertextbox-.5ex\relax]{1pt}
+            {\dimexpr\ht\chaptertextbox+\dp\chaptertextbox+1ex\relax}%
+        }%
+        \enskip
+        \usebox\chaptertextbox
+        \par
+      }
+      {\originalchapterlinesformat{#1}{#2}{#3}}%
+    }%
+}
+
+% Make the distance above the chapter title smaller
+\DeclareSectionCommand[beforeskip=0pt]{chapter}
+
+% Center the part text overriding the geometry package arguments
+% See https://tex.stackexchange.com/questions/598540/how-to-manipulate-textwidth-of-footnote
+\renewcommand{\partlineswithprefixformat}[3]{%
+\hsize=\dimexpr\columnwidth+\marginparsep+\marginparwidth\relax%
+#2#3%
+}
+
+% Change the PDF bookmark style and write 'Part I -'
+\makeatletter
+\bookmarksetup{%
+  addtohook={%
+    \ifnum\toclevel@part=\bookmarkget{level}\relax
+      \renewcommand*{\numberline}[1]{Part #1. }%
+    \fi
+  },
+}
+\makeatother
+
+
+% Some custom definitions
+% Momentum transfer, to be used in math mode!
+\newcommand*{\qtransfer}{\left|\mathbf{q}\right|}
